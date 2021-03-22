@@ -5,7 +5,8 @@ project("nativedemo")
 add_library(
         native-lib
         SHARED
-        native-lib.cpp)
+        native-lib.cpp
+        sort/sort.cpp)
 
 find_library(
         log-lib

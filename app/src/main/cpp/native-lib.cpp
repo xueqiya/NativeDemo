@@ -1,81 +1,50 @@
 #include <jni.h>
 #include <string>
-#include "log.h"
+#include "utils/log.h"
+#include "sort/sort.h"
 
-void swap(int *array, int j, int i) {
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-}
+sort *sort;
 
-extern "C"
 JNIEXPORT void JNICALL
-Java_com_xueqiya_nativedemo_MainActivity_bubbleSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+native_bubbleSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
     LOGD("Java_com_xueqiya_nativedemo_MainActivity_bubbleSort");
-    int size = (*env).GetArrayLength(array);
-    int *carr = (*env).GetIntArrayElements(array, nullptr);
-
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (carr[j] > carr[j + 1]) {
-                swap(carr, j, j + 1);
-            }
-        }
-    }
-
-    (*env).SetIntArrayRegion(array, 0, size, carr);
-    jclass jClass = (*env).GetObjectClass(obj);
-    jmethodID methodId = env->GetMethodID(jClass, "show", "([I)V");
-    env->CallVoidMethod(obj, methodId, array);
+    sort->bubbleSort(env, obj, array);
 }
 
-extern "C"
 JNIEXPORT void JNICALL
-Java_com_xueqiya_nativedemo_MainActivity_selectSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+native_selectSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
     LOGD("Java_com_xueqiya_nativedemo_MainActivity_selectSort");
-    int size = (*env).GetArrayLength(array);
-    int *carr = (*env).GetIntArrayElements(array, nullptr);
-
-    for (int i = 0; i < size; i++) {
-        int miniIndex = i;
-        for (int j = i + 1; j < size; j++) {
-            if (carr[miniIndex] > carr[j]) {
-                miniIndex = j;
-            }
-        }
-        if (i != miniIndex) {
-            swap(carr, miniIndex, i);
-        }
-    }
-
-    (*env).SetIntArrayRegion(array, 0, size, carr);
-    jclass jClass = (*env).GetObjectClass(obj);
-    jmethodID methodId = env->GetMethodID(jClass, "show", "([I)V");
-    env->CallVoidMethod(obj, methodId, array);
+    sort->selectSort(env, obj, array);
 }
 
-extern "C"
 JNIEXPORT void JNICALL
-Java_com_xueqiya_nativedemo_MainActivity_insertSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+native_insertSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
     LOGD("Java_com_xueqiya_nativedemo_MainActivity_insertSort");
-    int size = (*env).GetArrayLength(array);
-    int *carr = (*env).GetIntArrayElements(array, nullptr);
+    sort->insertSort(env, obj, array);
+}
 
-    for (int i = 1; i < size; i++) {
-        int x = carr[i];
-        int j = i;
-        while (j > 0 && carr[j - 1] > x) {
-            carr[j] = carr[j - 1];
-            j--;
-        }
-        if (i != j) {
-            carr[j] = x;
-        }
-    }
+const char *classPathName = "com/xueqiya/nativedemo/MainActivity";
 
-    (*env).SetIntArrayRegion(array, 0, size, carr);
+JNINativeMethod method[] = {{"bubbleSort", "([I)V", (void *) native_bubbleSort},
+                            {"selectSort", "([I)V", (void *) native_selectSort},
+                            {"insertSort", "([I)V", (void *) native_insertSort}};
 
-    jclass jClass = (*env).GetObjectClass(obj);
-    jmethodID methodId = env->GetMethodID(jClass, "show", "([I)V");
-    env->CallVoidMethod(obj, methodId, array);
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    LOGD("JNI_OnLoad");
+    //定义 JNIEnv 指针
+    JNIEnv *env = nullptr;
+    //获取 JNIEnv
+    vm->GetEnv((void **) &env, JNI_VERSION_1_6);
+    //获取对应的java类
+    jclass clazz = env->FindClass(classPathName);
+    //注册native方法
+    env->RegisterNatives(clazz, method, sizeof(method) / sizeof(method[0]));
+    //返回Jni 的版本
+    sort = new class sort();
+    return JNI_VERSION_1_6;
+}
+
+JNIEXPORT void JNI_OnUnload(JavaVM *vm, void *reserved) {
+    LOGD("JNI_OnUnload");
+
 }
