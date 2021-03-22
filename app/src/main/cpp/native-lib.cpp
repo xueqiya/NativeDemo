@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <string>
+#include "log.h"
 
 void swap(int *array, int j, int i) {
     int temp = array[i];
@@ -10,6 +11,7 @@ void swap(int *array, int j, int i) {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_xueqiya_nativedemo_MainActivity_bubbleSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+    LOGD("Java_com_xueqiya_nativedemo_MainActivity_bubbleSort");
     int size = (*env).GetArrayLength(array);
     int *carr = (*env).GetIntArrayElements(array, nullptr);
 
@@ -30,6 +32,7 @@ Java_com_xueqiya_nativedemo_MainActivity_bubbleSort(JNIEnv *env, jobject obj /* 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_xueqiya_nativedemo_MainActivity_selectSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+    LOGD("Java_com_xueqiya_nativedemo_MainActivity_selectSort");
     int size = (*env).GetArrayLength(array);
     int *carr = (*env).GetIntArrayElements(array, nullptr);
 
@@ -54,6 +57,7 @@ Java_com_xueqiya_nativedemo_MainActivity_selectSort(JNIEnv *env, jobject obj /* 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_xueqiya_nativedemo_MainActivity_insertSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
+    LOGD("Java_com_xueqiya_nativedemo_MainActivity_insertSort");
     int size = (*env).GetArrayLength(array);
     int *carr = (*env).GetIntArrayElements(array, nullptr);
 
