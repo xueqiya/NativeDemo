@@ -13,5 +13,4 @@ find_library(
 
 target_link_libraries( # Specifies the target library.
         native-lib
-
         ${log-lib})
