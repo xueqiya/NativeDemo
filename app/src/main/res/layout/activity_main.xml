@@ -24,4 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="插入排序" />
+
+    <Button
+        android:id="@+id/write_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="写入文件" />
 </androidx.appcompat.widget.LinearLayoutCompat>

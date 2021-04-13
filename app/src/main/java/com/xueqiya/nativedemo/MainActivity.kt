@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bubbleSort: Button
     private lateinit var selectSort: Button
     private lateinit var insertSort: Button
+    private lateinit var writeFile: Button
     private val array = intArrayOf(44, 4, 7, 22, 66, 5, 3)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,12 +25,14 @@ class MainActivity : AppCompatActivity() {
         bubbleSort = findViewById(R.id.bubble_sort)
         selectSort = findViewById(R.id.select_sort)
         insertSort = findViewById(R.id.insert_sort)
+        writeFile = findViewById(R.id.write_file)
     }
 
     private fun initListener() {
         bubbleSort.setOnClickListener { v: View? -> bubbleSort(array) }
         selectSort.setOnClickListener { v: View? -> selectSort(array) }
         insertSort.setOnClickListener { v: View? -> insertSort(array) }
+        writeFile.setOnClickListener { v: View? -> writeFile() }
     }
 
     fun show(array: IntArray?) {
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private external fun bubbleSort(array: IntArray)
     private external fun selectSort(array: IntArray)
     private external fun insertSort(array: IntArray)
+    private external fun writeFile()
 
     companion object {
         init {

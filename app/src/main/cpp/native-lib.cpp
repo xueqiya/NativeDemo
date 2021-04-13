@@ -1,5 +1,7 @@
 #include <jni.h>
 #include <string>
+#include <iostream>
+#include <unistd.h>
 #include "utils/log.h"
 #include "sort/sort.h"
 
@@ -23,11 +25,21 @@ native_insertSort(JNIEnv *env, jobject obj /* this */, jintArray array) {
     sort->insertSort(env, obj, array);
 }
 
+JNIEXPORT void JNICALL
+native_writeFile(JNIEnv *env, jobject obj /* this */ ) {
+    LOGD("Java_com_xueqiya_nativedemo_MainActivity_writeFile");
+    freopen("/data/data/com.xueqiya.nativedemo/cache/loglog.txt", "w", stdout);
+    printf("Java_com_xueqiya_nativedemo_MainActivity_writeFile1\n");
+    printf("Java_com_xueqiya_nativedemo_MainActivity_writeFile2\n");
+    fclose(stdout);
+}
+
 const char *classPathName = "com/xueqiya/nativedemo/MainActivity";
 
 JNINativeMethod method[] = {{"bubbleSort", "([I)V", (void *) native_bubbleSort},
                             {"selectSort", "([I)V", (void *) native_selectSort},
-                            {"insertSort", "([I)V", (void *) native_insertSort}};
+                            {"insertSort", "([I)V", (void *) native_insertSort},
+                            {"writeFile", "()V", (void *) native_writeFile}};
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     LOGD("JNI_OnLoad");
@@ -46,5 +58,4 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
 JNIEXPORT void JNI_OnUnload(JavaVM *vm, void *reserved) {
     LOGD("JNI_OnUnload");
-
 }
